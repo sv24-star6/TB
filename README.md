@@ -46,7 +46,7 @@ See [model comparison](results/model_comparison.json). Patient-level independenc
 | Stable upregulated | 684 |
 | Stable downregulated | 769 |
 
-Read [transcriptomics methods and status](transcriptomics/README.md) and [sensitivity analysis](transcriptomics/sensitivity_2026/README.md). The [sensitivity summary](transcriptomics/sensitivity_2026/sensitivity_summary.csv) is committed; detailed gene-level CSVs and QC images are not yet included in the repository.
+Read [transcriptomics methods and status](transcriptomics/README.md), [sensitivity analysis](transcriptomics/sensitivity_2026/README.md), and [completed GO-BP enrichment findings](transcriptomics/GO_BP/README.md) (576 upregulated and 77 downregulated significant GO terms). The [sensitivity summary](transcriptomics/sensitivity_2026/sensitivity_summary.csv) is committed; detailed gene-level CSVs and QC images are not yet included in the repository.
 
 **Interpretation:** These are exploratory host-response associations, not diagnostic markers or validated drug targets. The asinh-scale limma coefficients are not log2 fold changes. Detection filtering, probe annotation, cell-composition effects, clinical covariates and the asinh scale parameter need further assessment before publication.
 
