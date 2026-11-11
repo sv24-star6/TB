@@ -1,37 +1,55 @@
-# TB blood transcriptomics: preprocessing sensitivity analysis
+# TB Blood Transcriptomics: Preprocessing Sensitivity Analysis
 
-## Data and comparison
-- **GSE19439**: discovery cohort, active TB versus latent TB; also active TB versus healthy controls.
-- **GSE19442**: validation cohort, active TB versus latent TB.
+## Status
+**Completed exploratory analysis.** The summary is committed; detailed gene-level CSV files, source R script and QC figures are not yet present in this GitHub folder.
+
+## Datasets and design
+- GSE19439: discovery, 13 active TB, 17 latent TB and 12 healthy controls.
+- GSE19442: validation, 20 active TB and 31 latent TB.
 - Platform: Illumina HumanHT-12 v3 (GPL6947).
-- Original GEO signal intensities were compared against local expression matrices; both matched exactly.
-- Representative probes were selected using the highest discovery-cohort mean intensity for each gene symbol, with probes required in both cohorts. **18,625 genes** were tested.
+- Original local GEO expression CSVs matched the source series matrices exactly.
+- 18,625 representative gene-symbol probes tested, selected by highest discovery mean intensity among probes found in both cohorts.
 
-## Methods
-- **Method A**: `asinh(signal / 10)` on GEO-submitted, average-chip-normalised intensities.
-- **Method B**: Method A followed by within-cohort quantile normalisation.
-- Differential expression: limma linear model and empirical Bayes moderation (`eBayes(trend=TRUE)`), Benjamini-Hochberg adjusted p-values.
-- Replication: adjusted p < 0.05 in both cohorts, with matching effect direction.
-- Stable genes: replicated under both preprocessing methods, with consistent direction.
+## Preprocessing and statistics
+- **Method A:** `asinh(signal / 10)` on GEO-submitted average-chip-normalised intensities.
+- **Method B:** Method A plus quantile normalisation within each cohort.
+- limma `lmFit`, `eBayes(trend=TRUE)`, Benjamini-Hochberg FDR.
+- Replicated: adjusted p-value < 0.05 in discovery and validation, with matching direction.
+- Stable: replicated in both methods with consistent direction across methods and cohorts.
 
-**Important:** asinh-scale limma coefficients are *not* log2 fold changes. This is a preprocessing sensitivity analysis, not independent clinical validation.
+The limma coefficient is measured on the **asinh scale**, not as a log2 fold change.
 
 ## Results
-| Metric | Count |
+| Metric | Genes |
 |---|---:|
-| Tested genes | 18,625 |
+| Tested | 18,625 |
 | Method A replicated | 1,689 |
 | Method B replicated | 2,044 |
-| Stable across both | **1,453** |
+| Stable | **1,453** |
 | Stable upregulated | 684 |
 | Stable downregulated | 769 |
-| A only | 236 |
-| B only | 591 |
+| Method A only | 236 |
+| Method B only | 591 |
 
-See [sensitivity_summary.csv](sensitivity_summary.csv).
+[Download the committed summary CSV](sensitivity_summary.csv).
 
-## Interpretation and limitations
-The 1,453-gene intersection provides a conservative working set for exploratory pathway enrichment and TB host-response analyses. The two methods are related and do not provide independent replication beyond the two GEO cohorts. Probe annotation, detection p-value filtering, clinical covariates, and the arbitrary asinh scale parameter remain to be evaluated before publication. Blood-cell composition may influence differential expression. These results do not establish diagnostic or therapeutic validity.
+## Files and reproducibility status
+Currently committed here:
+- `README.md`: method, results, caveats.
+- `sensitivity_summary.csv`: aggregated counts.
 
-## Local analysis outputs
-The analysis generated `stable_replicated_genes.csv`, `Method_A_replicated.csv`, `Method_B_replicated.csv`, `final_probe_mapping.csv`, and GEO QC PDFs. They should be uploaded to this folder with the original analysis script to make the results fully reproducible.
+Produced locally but **not yet committed**:
+- `stable_replicated_genes.csv`
+- `Method_A_replicated.csv`, `Method_B_replicated.csv`
+- `Method_A_all_genes.csv`, `Method_B_all_genes.csv`
+- `final_probe_mapping.csv`
+- QC boxplots, PCA and cross-cohort plots
+- `TB_sensitivity_analysis.R` and session information
+
+These files should be committed after checking filenames, data integrity and whether sample metadata can be shared.
+
+## Limitations
+The overlap supports robustness to two related preprocessing choices, not independent biological validation. The fixed asinh scale of 10 is a modelling choice. Additional work is needed on probe specificity, detection filtering, cell-composition confounding, clinical covariates and empirical Bayes variance assumptions. Do not interpret these genes as validated TB diagnostics or therapeutic targets.
+
+## Next analysis
+Perform GO, KEGG and Reactome enrichment with the 18,625 tested genes as the background, analysing stable upregulated and downregulated sets separately. Interpret enrichment as exploratory.
