@@ -1,7 +1,7 @@
 # TB Host Blood Transcriptomics: Completed Exploratory Analysis
 
 ## Status
-**Differential-expression, GEO matrix verification, cross-cohort replication and preprocessing sensitivity analysis completed.** GO/KEGG/Reactome enrichment, updated probe annotation, detection p-value filtering, clinical-confounder assessment and host-directed drug-target prioritisation remain future work.
+**Differential-expression, GEO matrix verification, cross-cohort replication, preprocessing sensitivity analysis, and GO Biological Process enrichment completed.** KEGG/Reactome enrichment, updated probe annotation, detection p-value filtering, clinical-confounder assessment and host-directed drug-target prioritisation remain future work.
 
 The chest X-ray pilot uses a separate, unpaired dataset. No patient-level radiogenomic association can be inferred.
 
@@ -39,11 +39,15 @@ Both use Illumina HumanHT-12 v3 (GPL6947) and belong to the broader [GSE19491](h
 
 See [sensitivity_2026/README.md](sensitivity_2026/README.md) and [sensitivity_2026/sensitivity_summary.csv](sensitivity_2026/sensitivity_summary.csv). Detailed output CSVs, scripts and figures still need to be committed for complete reproducibility.
 
+## GO Biological Process enrichment
+
+GO-BP over-representation analysis found **576 significant terms for upregulated genes** (563 mapped input genes) and **77 for downregulated genes** (596 mapped input genes), using a mapped background of 13,925 genes and BH-adjusted p < 0.05. See the [GO-BP results and interpretation](GO_BP/README.md). Full CSVs and figures still need to be committed.
+
 ## Next steps
 - Review current probe-to-gene mappings and Illumina detection p-values.
 - Examine sample-level confounders and potential changes in blood-cell composition.
 - Assess robustness to the chosen asinh scale and limma variance assumptions.
-- Perform GO, KEGG and Reactome enrichment using the tested-gene background and separate up/down sets.
+- Review the completed GO-BP enrichment, audit unmapped gene symbols, and reduce redundant GO annotations; consider KEGG or Reactome as optional complementary analyses.
 - Prioritise possible host-directed targets only after pathway and external evidence review.
 
 ## Interpretation and limitations
