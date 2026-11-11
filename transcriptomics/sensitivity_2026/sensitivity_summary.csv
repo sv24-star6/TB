@@ -1,0 +1,10 @@
+metric,value
+Genes tested,18625
+Method A replicated,1689
+Method B replicated,2044
+Replicated in both methods,1453
+Stable same-direction genes,1453
+Method A only,236
+Method B only,591
+Stable upregulated,684
+Stable downregulated,769
