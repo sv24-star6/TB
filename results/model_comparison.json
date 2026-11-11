@@ -1,0 +1,17 @@
+{
+  "n": 155,
+  "both_correct": 79,
+  "both_wrong": 20,
+  "feature_correct_cnn_wrong": 36,
+  "cnn_correct_feature_wrong": 20,
+  "mcnemar_exact_two_sided_p": 0.044046546102150766,
+  "auroc_difference_feature_minus_cnn": 0.14402264402264398,
+  "auroc_difference_bootstrap_95pct_CI": [
+    0.06228296187490064,
+    0.22353316180017904
+  ],
+  "sensitivity_difference_feature_minus_cnn": -0.07692307692307687,
+  "specificity_difference_feature_minus_cnn": 0.2857142857142857,
+  "both_miss_TB": 6,
+  "both_false_alarm_non_TB": 14
+}
