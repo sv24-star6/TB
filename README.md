@@ -1,37 +1,18 @@
-# Tuberculosis Detection from Chest X-Rays: Machine Learning Pilot Study
+# Tuberculosis Research: Chest X-ray Classification and Host Blood Transcriptomics
 
 ## Overview
+This repository contains two **independent exploratory research components**:
+1. A chest X-ray machine-learning pilot comparing handcrafted features with a convolutional neural network (CNN).
+2. A whole-blood microarray analysis comparing active versus latent tuberculosis (TB), with cross-cohort replication and preprocessing sensitivity testing.
 
-This repository documents a pilot study of automated tuberculosis (TB) detection using chest X-ray images. Handcrafted radiographic features and a convolutional neural network (CNN) were evaluated for binary TB versus non-TB classification. Grad-CAM visualizations were generated to explore the regions influencing CNN predictions.
+**The imaging and transcriptomic samples are not patient-matched.** No radiogenomic associations, clinical diagnostic claims, or validated therapeutic targets are inferred.
 
-The study represents the **imaging phase** of a broader research project. Transcriptomic analysis and drug-target prioritization have not yet been performed.
+## Chest X-ray pilot
+The imaging dataset comprises 155 labelled chest X-rays from an Indian Jaypee collection (78 TB, 77 non-TB). Original images are not redistributed.
 
-## Dataset
+Images were analysed using handcrafted HOG, intensity histogram, GLCM and summary intensity features with logistic regression, and a three-convolutional-layer CNN. Both models used five-fold stratified, image-level cross-validation; CNN Grad-CAM images were exploratory.
 
-The pilot used 155 labelled chest X-rays from an Indian Jaypee collection:
-
-- **TB:** 78 images
-- **Non-TB:** 77 images
-
-Images were resized and converted to grayscale for modelling. The source images are not redistributed in this repository. See the original dataset provider for access and usage conditions.
-
-## Methods
-
-### Handcrafted image features and logistic regression
-
-Images were resized to 128 × 128 pixels. Histogram of oriented gradients (HOG), intensity histograms, gray-level co-occurrence matrix (GLCM) texture features and image intensity statistics were extracted. Features were standardized, and a logistic regression classifier was trained.
-
-### Convolutional neural network
-
-Images were resized to 96 × 96 pixels. A compact CNN containing three convolutional layers was trained for TB versus non-TB classification. Grad-CAM maps were generated for selected held-out examples to visualize regions contributing to the TB prediction score.
-
-### Evaluation
-
-Both approaches were evaluated using five-fold stratified, image-level cross-validation. Out-of-fold predictions were used to calculate accuracy, area under the receiver operating characteristic curve (AUROC), TB sensitivity and non-TB specificity. The models were also compared using paired predictions.
-
-## Pilot results
-
-| Metric | Handcrafted features + logistic regression | CNN |
+| Metric | Handcrafted + logistic regression | CNN |
 |---|---:|---:|
 | Accuracy | 74.2% | 63.9% |
 | AUROC | 0.848 | 0.704 |
@@ -40,32 +21,44 @@ Both approaches were evaluated using five-fold stratified, image-level cross-val
 | False negatives | 17 | 11 |
 | False positives | 23 | 45 |
 
-The handcrafted-feature model achieved higher accuracy and AUROC, whereas the CNN showed higher sensitivity but lower specificity. These results were exploratory and **do not establish clinical diagnostic performance**.
+See [model comparison](results/model_comparison.json). Patient-level independence could not be confirmed, and results do not establish clinical performance.
 
-See [model comparison](results/model_comparison.json) for the paired analysis.
+### Reproduce imaging pilot
+1. Obtain the original image dataset and metadata from its provider; place the archive at the repository root as `dataset.zip`.
+2. Run `pip install -r requirements.txt`.
+3. Run `python run_pilot.py` and `python run_cnn.py`.
+4. Run `python compare_models.py` after both prediction files exist.
 
-## Reproducibility
+## Host blood transcriptomics
+- **Discovery:** [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439), 42 samples (13 active TB, 17 latent TB, 12 healthy controls).
+- **Validation:** [GSE19442](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19442), 51 samples (20 active TB, 31 latent TB).
+- **Platform:** Illumina HumanHT-12 v3, GPL6947.
+- Local expression matrices were checked against original GEO series matrices and matched exactly.
+- **18,625** representative gene-symbol probes were analysed with limma.
+- Two sensitivity approaches: `asinh(signal/10)` on GEO-submitted intensities (A), and the same transform plus within-cohort quantile normalisation (B).
+- Replication required Benjamini-Hochberg FDR < 0.05 in both cohorts and consistent direction. Stable genes also had to meet this criterion under both preprocessing methods.
 
-1. Obtain the images and associated metadata from the original provider.
-2. Place the dataset archive in the repository root as `dataset.zip`.
-3. Install dependencies: `pip install -r requirements.txt`
-4. Run the handcrafted-feature experiment: `python run_pilot.py`
-5. Run the CNN experiment: `python run_cnn.py`
-6. Once both prediction files have been generated, run the paired comparison: `python compare_models.py`
+| Result | Genes |
+|---|---:|
+| Replicated under Method A | 1,689 |
+| Replicated under Method B | 2,044 |
+| Stable under both | **1,453** |
+| Stable upregulated | 684 |
+| Stable downregulated | 769 |
 
-Scripts write generated outputs to the `results/` directory.
+Read [transcriptomics methods and status](transcriptomics/README.md) and [sensitivity analysis](transcriptomics/sensitivity_2026/README.md). The [sensitivity summary](transcriptomics/sensitivity_2026/sensitivity_summary.csv) is committed; detailed gene-level CSVs and QC images are not yet included in the repository.
 
-## Repository structure
+**Interpretation:** These are exploratory host-response associations, not diagnostic markers or validated drug targets. The asinh-scale limma coefficients are not log2 fold changes. Detection filtering, probe annotation, cell-composition effects, clinical covariates and the asinh scale parameter need further assessment before publication.
 
-- `run_pilot.py`: handcrafted feature extraction, logistic regression and cross-validation
-- `run_cnn.py`: CNN training, evaluation and Grad-CAM generation
-- `compare_models.py`: paired comparison of model predictions
-- `results/`: summary metrics and selected analysis outputs
-- `transcriptomics/`: proposed molecular analysis design, **not completed results**
-- `requirements.txt`: Python dependencies
+## Repository layout
+- `run_pilot.py`, `run_cnn.py`, `compare_models.py`: imaging analyses
+- `results/`: imaging results and selected figures
+- `transcriptomics/README.md`: transcriptomic data, workflow and outstanding validation
+- `transcriptomics/sensitivity_2026/`: sensitivity documentation and summary table
+- `requirements.txt`: imaging Python dependencies
 
-## Limitations
+## Study limitations
+Imaging data are limited in size and may contain patient-level overlap, acquisition bias or near-duplicates. Blood transcriptomic cohorts are independent of the X-ray collection. Transcriptomic replication across cohorts and preprocessing choices does not replace biological or prospective validation.
 
-This pilot used a small dataset. Patient-level identifiers were unavailable, so patient independence could not be established. Image acquisition differences, near-duplicate scans, selection bias and limited external generalizability may have affected the results. Grad-CAM maps are exploratory explanations and have not been validated as lesion localization by a radiologist.
-
-The X-ray dataset is not paired with transcriptomic measurements. No radiogenomic associations or drug discovery findings are claimed.
+## Reference
+Berry et al. *Nature* (2010). [DOI: 10.1038/nature09247](https://doi.org/10.1038/nature09247).
