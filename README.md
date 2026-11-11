@@ -31,6 +31,3 @@ Both scripts save output to `results/`. The feature model uses 128×128 grayscal
 - `results/`: previously generated pilot outputs
 - `requirements.txt`: dependencies
 
-The Grad-CAM overlays show model attention, **not confirmed lesion localization**. The radiologist review template contains model outputs and is not blinded; remove those fields before blinded review.
-
-No transcriptomic analysis, radiogenomic association, docking or drug repurposing was performed. This repository documents the imaging phase only. Avoid claiming molecular validation from these results.
