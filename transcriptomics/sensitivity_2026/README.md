@@ -1,8 +1,5 @@
 # TB Blood Transcriptomics: Preprocessing Sensitivity Analysis
 
-## Status
-**Completed exploratory analysis.** The summary is committed; detailed gene-level CSV files, source R script and QC figures are not yet present in this GitHub folder.
-
 ## Datasets and design
 - GSE19439: discovery, 13 active TB, 17 latent TB and 12 healthy controls.
 - GSE19442: validation, 20 active TB and 31 latent TB.
@@ -46,10 +43,9 @@ Produced locally but **not yet committed**:
 - QC boxplots, PCA and cross-cohort plots
 - `TB_sensitivity_analysis.R` and session information
 
-These files should be committed after checking filenames, data integrity and whether sample metadata can be shared.
+
 
 ## Limitations
 The overlap supports robustness to two related preprocessing choices, not independent biological validation. The fixed asinh scale of 10 is a modelling choice. Additional work is needed on probe specificity, detection filtering, cell-composition confounding, clinical covariates and empirical Bayes variance assumptions. Do not interpret these genes as validated TB diagnostics or therapeutic targets.
 
-## Next analysis
-Perform GO, KEGG and Reactome enrichment with the 18,625 tested genes as the background, analysing stable upregulated and downregulated sets separately. Interpret enrichment as exploratory.
+
