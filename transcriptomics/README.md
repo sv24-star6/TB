@@ -1,29 +1,42 @@
-# Molecular analysis: TB host transcriptomics
+# Planned Analysis: Host Transcriptomics and Drug-Target Prioritization in Tuberculosis
 
-## Data selection
+## Status
 
-[GSE19491](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19491) is a **SuperSeries**, not a homogeneous discovery cohort. It contains UK training/test sets, South African samples, longitudinal samples, and other inflammatory diseases. Do **not** combine all 498 samples into a single active-TB versus healthy-control comparison.
+**Planned, not executed.** This folder records the proposed molecular research workflow. No gene-expression analysis, pathway enrichment, drug repurposing or molecular docking results have been generated for this project.
 
-Start with the UK training subseries [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439), inspect metadata, and manually verify case/control labels. Reserve a separate cohort such as GSE19442 for external validation only after checking platform, preprocessing, sample independence and clinical labels.
+## Scientific objective
 
-## Analysis plan
+The proposed study will investigate reproducible host transcriptional signatures associated with active tuberculosis and assess whether the resulting evidence supports prioritization of host-directed therapeutic targets.
 
-1. Audit accession, sample IDs, clinical groups, time points and platform.
-2. Use normalized expression values; inspect their scale and missingness before transformation.
-3. Perform active-TB versus healthy-control differential expression using a properly specified design (limma is recommended for microarrays, including relevant covariates where available).
-4. Adjust for multiple comparisons (Benjamini-Hochberg); map probes to genes using the exact platform annotation.
-5. Validate gene direction and effect size in an independent cohort; test specificity against other inflammatory diseases.
-6. Enrich replicated gene sets for GO/Reactome pathways with an appropriate tested-gene background.
-7. Only then assess host target evidence, druggability and known compound interactions. Drug signature reversal is hypothesis generation, not evidence of clinical efficacy.
+The molecular component will use **independent public cohorts**. The chest X-rays used in the imaging pilot are not linked to these samples, so patient-level radiogenomic correlation will not be possible.
 
-**Status:** Study selection and analysis design only. No molecular expression data have been downloaded or analysed, and no molecular results are claimed.
+## Candidate data sources
 
-## Reproducible starting point
+- [GSE19491](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19491): a SuperSeries comprising distinct study cohorts, rather than one homogeneous case-control dataset.
+- [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439): proposed discovery cohort, subject to verification of sample-level metadata and clinical labels.
+- [GSE19442](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19442): potential validation cohort, subject to verification of independence, platform and clinical labels.
 
-Use [GEO2R](https://www.ncbi.nlm.nih.gov/geo/geo2r/) on GSE19439 for a first QC inspection, or download the processed series matrix from GEO. Record exact sample inclusion/exclusion decisions. The main analysis should use limma rather than a generic t-test for publication.
+Cohorts will not be pooled indiscriminately. Their eligibility will be assessed before analysis.
 
-## Interpretation limits
+## Proposed methodology
 
-The 155 Indian chest X-rays are not paired with GEO blood samples. We cannot claim radiogenomic correlations, infer drug response from X-ray attention maps, or link specific image features to expression of specific genes.
+1. **Data audit:** Review sample identifiers, TB status, controls, study design, time points, platform and possible cohort overlap.
+2. **Quality control:** Inspect expression distributions, normalization, missing values and sample-level outliers.
+3. **Differential expression:** Compare active TB with appropriate controls using a platform-appropriate statistical design, such as limma for microarray data.
+4. **Multiple-testing correction:** Apply Benjamini–Hochberg false discovery rate adjustment and map probes using the relevant platform annotation.
+5. **External validation:** Assess effect-direction concordance and reproducibility in an independent cohort.
+6. **Functional interpretation:** Evaluate replicated genes using GO and Reactome enrichment with a suitable gene background.
+7. **Target prioritization:** Examine disease relevance, druggability, known interactions and supporting experimental evidence.
+8. **Exploratory drug repurposing:** Consider drug-signature reversal only if data quality and target evidence justify it. Predicted compounds will not be presented as validated TB therapies.
 
-Reference: Berry et al., *Nature* (2010), doi:10.1038/nature09247.
+## Reproducibility requirements
+
+The completed analysis will document accession versions, sample inclusion/exclusion criteria, preprocessing, statistical models, software versions, gene identifiers and validation strategy. Expression matrices, metadata, code and actual outputs will be added only when the corresponding work has been performed and their redistribution is permitted.
+
+## Interpretation
+
+Findings from independent imaging and blood transcriptomic cohorts may provide complementary information about TB, but cannot establish patient-level associations between chest X-ray features, molecular pathways or drug response.
+
+## Reference
+
+Berry et al. *Nature* (2010). DOI: [10.1038/nature09247](https://doi.org/10.1038/nature09247).
