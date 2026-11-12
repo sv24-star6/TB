@@ -49,11 +49,4 @@ Upregulated transcripts are enriched for innate immune, interferon-associated, p
 
 A notable annotation caveat: the 20 genes driving the `negative regulation of myoblast fusion` term are ribosomal proteins, so this does not independently demonstrate altered muscle-cell fusion. GO term redundancy and blood-cell composition must be considered. Some T-cell-related GO terms contain genes from both expression directions, so uniform T-cell suppression cannot be inferred.
 
-## Reproducibility and remaining tasks
-- Commit the complete `GO_BP_Upregulated.csv` and `GO_BP_Downregulated.csv` output files.
-- Commit the downregulated barplot and generate matching upregulated and combined plots.
-- Audit unmapped gene symbols, confirm the precise universe, and retain the R script and `sessionInfo()`.
-- Optionally reduce redundant GO terms using `clusterProfiler::simplify()`, keeping the original complete results.
-- Interpret potential therapeutic targets only after further biological validation.
-
 See [the parent transcriptomics overview](../README.md) and [sensitivity analysis](../sensitivity_2026/README.md).
