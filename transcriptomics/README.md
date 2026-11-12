@@ -25,11 +25,13 @@ The asinh-scale limma coefficients are **not log2 fold changes**. Preprocessing 
 
 The L2S2 10,000-row export was apparently truncated by mimicker significance; re-ranking by reverser significance is **conditional on this subset**. Drug identity and pharmacology require independent verification. Lipinski compliance does not establish ADMET or TB efficacy.
 
-## Next steps
-1. Audit probe mappings, detection filtering, clinical covariates and cell composition.
-2. Validate in an independent cohort, with GSE37250 as a potential candidate pending metadata verification.
-3. Repeat unbiased reverser-oriented LINCS screening and signature-size sensitivity analysis.
-4. Confirm chemical identities, compound types, exposure, TB-specific pharmacology and TB-regimen interactions.
+## Final conclusion and project status
+
+**Status: Exploratory analysis completed and closed (November 2026). No additional analysis is planned for this version.**
+
+Active-versus-latent TB blood-expression comparisons yielded 1,453 genes with consistent statistical support across two related GEO cohorts and two preprocessing approaches (684 upregulated; 769 downregulated). GO enrichment and STRING associations pointed to immune-response processes, but whole-blood cell-composition effects and methodological uncertainty limit causal interpretation. The subsequent L2S2 screen identified candidate reversal signals within a truncated export, and RDKit descriptors plus a focused literature review provided preliminary chemical and safety context.
+
+These results support **hypothesis generation only**. They do not establish a validated TB diagnostic signature, therapeutic target, compound efficacy, or clinical safety. Independent-cohort validation, unbiased reversal screening and experimental testing were **not performed** and are acknowledged as limitations rather than pending tasks.
 
 The chest X-ray pilot is separate and not patient-matched.
 
