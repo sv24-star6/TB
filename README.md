@@ -24,6 +24,14 @@ A 30-compound chemical-property audit resolved 28 PubChem structures, of which 2
 
 **[Drug-repurposing methods, results, evidence tables and limitations](transcriptomics/drug_repurposing/README.md)**
 
+## Final conclusion and project status
+
+**Status: Analysis concluded at the exploratory computational stage (November 2026). No further analyses are planned for this repository version.**
+
+Across the two related GEO cohorts and two preprocessing approaches, 1,453 active-versus-latent TB-associated genes showed consistent direction and statistical support. Functional enrichment and a selected STRING network highlighted immune-response patterns, while a LINCS/L2S2 screen identified transcriptional reversal signals in an exported subset. Physicochemical profiling resolved 28 of 30 shortlisted structures; targeted literature review identified mechanistic interest in zileuton and vorinostat, alongside important safety and drug-interaction concerns across candidates.
+
+**Overall conclusion:** This work provides a descriptive, hypothesis-generating computational assessment of TB host-response signatures and possible host-directed repurposing leads. It does **not** establish independent study-level validation, comprehensive LINCS rankings, actual ADMET performance, anti-TB activity, or clinical suitability. The study is intentionally closed at this stage; any future external validation or experiments would be a separate project.
+
 ## Important limitations
 Whole-blood transcriptional signals may reflect cell-composition changes. Asinh-scale coefficients are not log2 fold changes. GEO probe mapping, independent validation, unbiased reversal export, chemical identity checks, TB-drug interactions and experimental confirmation remain necessary. Physicochemical descriptors are not measured ADMET properties. No docking or machine-learning classification was performed for the drug-repurposing extension.
 
