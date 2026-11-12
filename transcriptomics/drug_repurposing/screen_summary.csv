@@ -1,0 +1,6 @@
+metric,count
+exported_rows,10000
+concentration_labelled_rows,7076
+significant_reversal_concentration_labelled_rows,715
+distinct_perturbations_in_significant_subset,599
+recurring_hits_across_at_least_3_cell_lines,16
