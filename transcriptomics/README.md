@@ -1,57 +1,36 @@
-# TB Host Blood Transcriptomics: Completed Exploratory Analysis
+# TB Host Blood Transcriptomics
 
-## Status
-**Differential-expression, GEO matrix verification, cross-cohort replication, preprocessing sensitivity analysis, and GO Biological Process enrichment completed.** KEGG/Reactome enrichment, updated probe annotation, detection p-value filtering, clinical-confounder assessment and host-directed drug-target prioritisation remain future work.
+## Datasets
+- GSE19439: 42 samples (13 active TB, 17 latent, 12 healthy)
+- GSE19442: 51 samples (20 active TB, 31 latent)
+- Both GPL6947, within the same original study programme.
 
-The chest X-ray pilot uses a separate, unpaired dataset. No patient-level radiogenomic association can be inferred.
+## Completed analyses
+- GEO series-matrix verification and sample-label checks
+- limma differential expression with 18,625 representative gene symbols
+- Method A: `asinh(signal/10)`; Method B: same transform followed by within-cohort quantile normalisation
+- BH FDR <0.05 and consistent active-versus-latent effect direction in both cohorts
+- 1,689 replicated genes under A, 2,044 under B; **1,453 stable across both** (684 up, 769 down)
+- GO-BP ORA: 576 significant upregulated and 77 downregulated term entries
+- STRING v12.0 score ≥700 network of 50 selected genes: 108 edges, 13 components, 12 isolates
+- L2S2 reversal screening, 30-compound RDKit descriptor audit and focused six-compound literature review
 
-## Public datasets
-| Dataset | Role | Samples | Groups |
-|---|---|---:|---|
-| [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439) | Discovery | 42 | 13 active TB, 17 latent TB, 12 healthy |
-| [GSE19442](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19442) | Validation | 51 | 20 active TB, 31 latent TB |
+## Documentation
+- [Sensitivity analysis](sensitivity_2026/README.md)
+- [GO-BP analysis](GO_BP/README.md)
+- [Drug repurposing and ADMET evidence](drug_repurposing/README.md)
 
-Both use Illumina HumanHT-12 v3 (GPL6947) and belong to the broader [GSE19491](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19491) study collection. GEO-submitted signal intensities were produced using Illumina BeadStudio and average chip normalisation. The locally prepared expression matrices matched the GEO series matrices exactly.
+## Caveats
+The asinh-scale limma coefficients are **not log2 fold changes**. Preprocessing approaches use the same samples and do not provide independent biological validation. GSE19439 and GSE19442 originate from the same broader programme. Whole-blood gene expression is vulnerable to cell-composition and clinical confounding. Gene annotations and filtering need review.
 
-## Completed methods
-1. Audited local GEO matrices and sample group labels.
-2. Inspected signal distributions, including negative intensities, and transformation/normalisation diagnostics.
-3. Restricted to probes present in both cohorts, then selected one representative probe per gene symbol using highest mean intensity in the discovery cohort (18,625 genes).
-4. Applied two preprocessing methods independently within each cohort:
-   - **A:** `asinh(signal / 10)`, retaining GEO-submitted normalisation.
-   - **B:** A followed by between-array quantile normalisation.
-5. Applied limma linear modelling with empirical Bayes moderation (`eBayes(trend=TRUE)`) to active versus latent TB in each cohort; active versus healthy was also evaluated in GSE19439.
-6. Called genes replicated when FDR < 0.05 in both cohorts and effect direction matched; intersected replicating genes across A and B with consistent direction.
-
-**The asinh-transformed effect coefficients are not log2 fold changes.**
-
-## Sensitivity results
-| Outcome | Count |
-|---|---:|
-| Tested genes | 18,625 |
-| Method A replicated | 1,689 |
-| Method B replicated | 2,044 |
-| Stable in both methods | **1,453** |
-| Stable upregulated | 684 |
-| Stable downregulated | 769 |
-| A only | 236 |
-| B only | 591 |
-
-See [sensitivity_2026/README.md](sensitivity_2026/README.md) and [sensitivity_2026/sensitivity_summary.csv](sensitivity_2026/sensitivity_summary.csv). Detailed output CSVs, scripts and figures still need to be committed for complete reproducibility.
-
-## GO Biological Process enrichment
-
-GO-BP over-representation analysis found **576 significant terms for upregulated genes** (563 mapped input genes) and **77 for downregulated genes** (596 mapped input genes), using a mapped background of 13,925 genes and BH-adjusted p < 0.05. See the [GO-BP results and interpretation](GO_BP/README.md). Full CSVs and figures still need to be committed.
+The L2S2 10,000-row export was apparently truncated by mimicker significance; re-ranking by reverser significance is **conditional on this subset**. Drug identity and pharmacology require independent verification. Lipinski compliance does not establish ADMET or TB efficacy.
 
 ## Next steps
-- Review current probe-to-gene mappings and Illumina detection p-values.
-- Examine sample-level confounders and potential changes in blood-cell composition.
-- Assess robustness to the chosen asinh scale and limma variance assumptions.
-- Review the completed GO-BP enrichment, audit unmapped gene symbols, and reduce redundant GO annotations; consider KEGG or Reactome as optional complementary analyses.
-- Prioritise possible host-directed targets only after pathway and external evidence review.
+1. Audit probe mappings, detection filtering, clinical covariates and cell composition.
+2. Validate in an independent cohort, with GSE37250 as a potential candidate pending metadata verification.
+3. Repeat unbiased reverser-oriented LINCS screening and signature-size sensitivity analysis.
+4. Confirm chemical identities, compound types, exposure, TB-specific pharmacology and TB-regimen interactions.
 
-## Interpretation and limitations
-The 1,453-gene intersection is a conservative **exploratory** gene set. Methods A and B are related transformations of the same GEO measurements; agreement does not establish independent experimental validation. Cohorts may differ in population, sampling and other clinical variables. No drug repurposing or docking conclusions are claimed.
+The chest X-ray pilot is separate and not patient-matched.
 
-## Reference
-Berry et al. *Nature* (2010). [DOI: 10.1038/nature09247](https://doi.org/10.1038/nature09247).
+Reference: Berry et al., *Nature* (2010), https://doi.org/10.1038/nature09247
