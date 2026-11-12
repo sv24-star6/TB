@@ -65,13 +65,15 @@ These are **research hypotheses**, not a ranking of clinically usable TB drugs.
 - [Methods and limitations](METHODS_AND_LIMITATIONS.md): reproducibility notes and outstanding validation.
 - The full compound-level screening CSVs, detailed descriptor matrices, R scripts and raw GEO data are **not yet committed**. Do not interpret this documentation as a fully reproducible data archive.
 
-## Required validation before manuscript submission
-- Review probe annotation, detection filtering, transformation-scale sensitivity, cell-composition confounding and gene-mapping losses.
-- Validate the disease signature in a genuinely independent cohort (GSE37250 is a candidate; metadata and groups need verification).
-- Repeat the reversal search with an unbiased reverser-oriented export and assess 50/100/150/200-gene sensitivity.
-- Confirm chemical identity, drug concentration, cell-line relevance, dose dependence and direction of modulation.
-- Evaluate hepatotoxicity, myelosuppression, immunomodulation, drug-drug interactions with TB regimens and available experimental TB evidence.
-- Do not interpret whole-blood expression reversal as proof of therapeutic benefit.
+## Final conclusion and project status
+
+**Status: Completed exploratory computational assessment; analysis closed in November 2026.**
+
+The study identified 1,453 consistently associated active-versus-latent TB blood-expression genes across two related GEO cohorts and two preprocessing methods. Functional enrichment and a selected STRING network implicated immune-response pathways, without demonstrating causality or druggability. Screening a 150-up/150-down gene signature against an L2S2 export yielded 715 concentration-labelled records with adjusted reversal p <0.05 **within the available 10,000-row subset**. Because the export appeared selected by mimicker significance, these results cannot be presented as exhaustive or globally top-ranked reversers.
+
+Of 30 compounds assessed for basic chemical properties, 28 were resolved via PubChem and 20 met all assessed Lipinski criteria. These descriptors do not constitute ADMET or efficacy evidence. Focused literature review found TB-relevant mechanistic rationale for zileuton and vorinostat, while identifying meaningful safety constraints; evidence for other reviewed candidates was weaker or raised interaction concerns.
+
+**Conclusion:** The workflow generated preliminary host-directed drug-repurposing hypotheses, not validated anti-TB compounds. No compound is recommended for clinical use. The work ends at this computational evidence-assessment stage. Independent external validation, unbiased reversal screening, chemical-identity verification and experimental efficacy testing were **not conducted** and remain explicit study limitations, not commitments for further analysis.
 
 ## Key sources
 - Berry et al., *Nature* (2010): https://doi.org/10.1038/nature09247
