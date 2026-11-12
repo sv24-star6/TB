@@ -1,64 +1,31 @@
 # Tuberculosis Research: Chest X-ray Classification and Host Blood Transcriptomics
 
-## Overview
-This repository contains two **independent exploratory research components**:
-1. A chest X-ray machine-learning pilot comparing handcrafted features with a convolutional neural network (CNN).
-2. A whole-blood microarray analysis comparing active versus latent tuberculosis (TB), with cross-cohort replication and preprocessing sensitivity testing.
-
-**The imaging and transcriptomic samples are not patient-matched.** No radiogenomic associations, clinical diagnostic claims, or validated therapeutic targets are inferred.
+This repository contains two **separate, exploratory research components**: (1) a chest X-ray classification pilot and (2) whole-blood transcriptomics with host-directed drug-repurposing hypotheses. Imaging and transcriptomics samples are **not patient-matched**.
 
 ## Chest X-ray pilot
-The imaging dataset comprises 155 labelled chest X-rays from an Indian Jaypee collection (78 TB, 77 non-TB). Original images are not redistributed.
+155 labelled chest X-rays (78 TB; 77 non-TB), with five-fold stratified image-level cross-validation. The handcrafted-features logistic regression model achieved 74.2% accuracy and AUROC 0.848; a three-layer CNN achieved 63.9% accuracy and AUROC 0.704. Patient-level independence was not confirmed. See [imaging model comparison](results/model_comparison.json). Original images are not redistributed.
 
-Images were analysed using handcrafted HOG, intensity histogram, GLCM and summary intensity features with logistic regression, and a three-convolutional-layer CNN. Both models used five-fold stratified, image-level cross-validation; CNN Grad-CAM images were exploratory.
+To reproduce the imaging pilot, obtain the provider's dataset as `dataset.zip`, run `pip install -r requirements.txt`, then `python run_pilot.py`, `python run_cnn.py`, and `python compare_models.py`.
 
-| Metric | Handcrafted + logistic regression | CNN |
-|---|---:|---:|
-| Accuracy | 74.2% | 63.9% |
-| AUROC | 0.848 | 0.704 |
-| TB sensitivity | 78.2% | 85.9% |
-| Non-TB specificity | 70.1% | 41.6% |
-| False negatives | 17 | 11 |
-| False positives | 23 | 45 |
+## Blood transcriptomics
+- [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439): 42 samples, including 13 active TB, 17 latent TB, 12 healthy controls.
+- [GSE19442](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19442): 51 samples, including 20 active and 31 latent TB.
+- Both use GPL6947 and originate from the same broader research programme; replication is not fully independent study-level validation.
+- Limma tested 18,625 representative genes under two asinh-based preprocessing methods; 1,453 genes replicated under both methods (684 up, 769 down).
+- GO-BP enrichment found 576 significant upregulated and 77 downregulated term entries.
+- STRING network of 50 selected GO-supported proteins (score ≥700): 108 edges, 13 components and 12 isolates.
 
-See [model comparison](results/model_comparison.json). Patient-level independence could not be confirmed, and results do not establish clinical performance.
+See [transcriptomics methods](transcriptomics/README.md) and [GO-BP analysis](transcriptomics/GO_BP/README.md).
 
-### Reproduce imaging pilot
-1. Obtain the original image dataset and metadata from its provider; place the archive at the repository root as `dataset.zip`.
-2. Run `pip install -r requirements.txt`.
-3. Run `python run_pilot.py` and `python run_cnn.py`.
-4. Run `python compare_models.py` after both prediction files exist.
+## Drug-repurposing and ADMET extension
+A 150-up/150-down active-TB signature was screened using [L2S2](https://l2s2.maayanlab.cloud/) LINCS transcriptional reversal. The 10,000-row exported subset contained 7,076 concentration-labelled treatment rows, 715 with adjusted reversal p <0.05. The export was apparently truncated by **mimicker** rather than reverser significance, so these are **not exhaustive LINCS rankings**.
 
-## Host blood transcriptomics
-- **Discovery:** [GSE19439](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19439), 42 samples (13 active TB, 17 latent TB, 12 healthy controls).
-- **Validation:** [GSE19442](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE19442), 51 samples (20 active TB, 31 latent TB).
-- **Platform:** Illumina HumanHT-12 v3, GPL6947.
-- Local expression matrices were checked against original GEO series matrices and matched exactly.
-- **18,625** representative gene-symbol probes were analysed with limma.
-- Two sensitivity approaches: `asinh(signal/10)` on GEO-submitted intensities (A), and the same transform plus within-cohort quantile normalisation (B).
-- Replication required Benjamini-Hochberg FDR < 0.05 in both cohorts and consistent direction. Stable genes also had to meet this criterion under both preprocessing methods.
+A 30-compound chemical-property audit resolved 28 PubChem structures, of which 20 had zero Lipinski violations. Six compounds were reviewed for TB-relevant evidence and selected safety concerns. **No candidate is clinically validated for TB.**
 
-| Result | Genes |
-|---|---:|
-| Replicated under Method A | 1,689 |
-| Replicated under Method B | 2,044 |
-| Stable under both | **1,453** |
-| Stable upregulated | 684 |
-| Stable downregulated | 769 |
+**[Drug-repurposing methods, results, evidence tables and limitations](transcriptomics/drug_repurposing/README.md)**
 
-Read [transcriptomics methods and status](transcriptomics/README.md), [sensitivity analysis](transcriptomics/sensitivity_2026/README.md), and [completed GO-BP enrichment findings](transcriptomics/GO_BP/README.md) (576 upregulated and 77 downregulated significant GO terms). The [sensitivity summary](transcriptomics/sensitivity_2026/sensitivity_summary.csv) is committed; detailed gene-level CSVs and QC images are not yet included in the repository.
-
-**Interpretation:** These are exploratory host-response associations, not diagnostic markers or validated drug targets. The asinh-scale limma coefficients are not log2 fold changes. Detection filtering, probe annotation, cell-composition effects, clinical covariates and the asinh scale parameter need further assessment before publication.
-
-## Repository layout
-- `run_pilot.py`, `run_cnn.py`, `compare_models.py`: imaging analyses
-- `results/`: imaging results and selected figures
-- `transcriptomics/README.md`: transcriptomic data, workflow and outstanding validation
-- `transcriptomics/sensitivity_2026/`: sensitivity documentation and summary table
-- `requirements.txt`: imaging Python dependencies
-
-## Study limitations
-Imaging data are limited in size and may contain patient-level overlap, acquisition bias or near-duplicates. Blood transcriptomic cohorts are independent of the X-ray collection. Transcriptomic replication across cohorts and preprocessing choices does not replace biological or prospective validation.
+## Important limitations
+Whole-blood transcriptional signals may reflect cell-composition changes. Asinh-scale coefficients are not log2 fold changes. GEO probe mapping, independent validation, unbiased reversal export, chemical identity checks, TB-drug interactions and experimental confirmation remain necessary. Physicochemical descriptors are not measured ADMET properties. No docking or machine-learning classification was performed for the drug-repurposing extension.
 
 ## Reference
-Berry et al. *Nature* (2010). [DOI: 10.1038/nature09247](https://doi.org/10.1038/nature09247).
+Berry et al., *Nature* (2010): https://doi.org/10.1038/nature09247
