@@ -21,11 +21,8 @@ An exported 10,000-row table was sorted in Python by adjusted reverser p-value. 
 ## Evidence review
 Focused source-backed review of bortezomib, selumetinib, olaparib, vorinostat, zileuton and etodolac. The remaining 24 were not fully reviewed and must not be considered safe by default. Relevant clinical labels and TB-specific studies should be rechecked at manuscript submission.
 
-## Outstanding work
-1. Independent external cohort validation.
-2. Unbiased reversal-oriented export and sensitivity analyses.
-3. Verify LINCS perturbation types, chemical identities, cell lines, dose and duration.
-4. Review interactions with rifampicin and other TB drugs, immunosuppression and liver toxicity.
-5. Preserve exact raw inputs, code, software versions and provenance for manuscript reproducibility.
+## Final interpretation and study closure
+
+**The analysis is concluded at its current exploratory stage (November 2026); no further analyses are planned for this version.** The replicated gene signature, GO and STRING analyses, conditional L2S2 reversal results, RDKit descriptors and focused literature review jointly support hypothesis generation about host-directed TB repurposing. They do not prove drug efficacy, measured ADMET, causal target engagement or clinical feasibility. The incomplete LINCS export, related GEO cohorts, whole-blood confounding, unverified compound identities and lack of wet-lab validation are retained as limitations of the completed work rather than an active work plan.
 
 No docking, machine-learning classification, wet-lab TB experiment or quantitative ADMET model was performed.
